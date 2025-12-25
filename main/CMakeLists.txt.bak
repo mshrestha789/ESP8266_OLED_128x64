@@ -1,0 +1,2 @@
+idf_component_register(SRCS "main.c" "../src/led_interface.c" "../src/i2c_interface.c" "../../samadhan_lib/div/oled_ssd1306/oled_128x64.c"
+                    INCLUDE_DIRS "../src" "../../samadhan_lib/div/oled_ssd1306" "../src" "../../samadhan_lib/div/oled_ssd1306/fonts")

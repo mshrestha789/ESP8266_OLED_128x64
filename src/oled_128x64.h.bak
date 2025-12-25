@@ -1,0 +1,83 @@
+#ifndef __OLED_128X64_H__
+#define __OLED_128X64_H__
+
+#include "inttypes.h"
+#include "fonts/fonts.h"
+
+typedef enum {
+    OLED_SEND_DATA = 0x0,
+    OLED_FUNCTION_YEILD = 0x1
+} oled_info_type_t;
+
+
+typedef enum
+{
+    OLED_COLOR_BLACK = 0,        //!< Black (pixel off)
+    OLED_COLOR_WHITE = 1,        //!< White (or blue, yellow, pixel on)    
+} oled_color_t;
+
+typedef struct
+{
+    oled_info_type_t info_type;
+    uint8_t address;
+    uint8_t register_add;
+    uint8_t *data;
+    uint32_t data_len;
+}oled_info_t;
+
+
+
+uint32_t oled_init(uint32_t (*oled_callback)(oled_info_t *info));
+void oled_clear_display();
+void oled_display_text(uint8_t *text, uint32_t text_len);
+void oled_load_xbm(uint8_t *xbm);
+int32_t oled_prepare_string_frame(const font_info_t *font, uint8_t x, uint8_t y, const char *str, 
+	oled_color_t foreground, oled_color_t background);
+void oled_display_prepared_frame();
+
+uint32_t oled_invert_display(uint8_t t);
+uint32_t oled_reverse_display_scan(uint8_t t);
+
+#if 0
+#warning "This library internally uses memory buffer of size 1024"
+
+typedef enum 
+{
+    OLED_SEND_DATA = 0x0,
+    OLED_FUNCTION_YEILD = 0x1,
+    OLED_SEND_BYTE = 0x02
+} oled_info_type_t;
+
+
+typedef struct
+{
+    oled_info_type_t info_type;
+    uint8_t address;
+    uint8_t register_add;
+    uint8_t *data;
+    uint32_t data_len;
+}oled_send_t;
+
+typedef struct 
+{
+	uint32_t oled_height;
+	uint32_t oled_width;
+	uint8_t *frame_buffer;
+	uint32_t (*oled_callback)(oled_send_t *info)
+}oled_info_t;
+
+uint32_t oled_init(oled_info_t *info);
+void oled_clear_display(oled_info_t *info);
+void oled_display_text(oled_info_t *info, uint8_t *text, uint32_t text_len);
+
+void oled_load_xbm(oled_info_t *info, uint8_t *xbm);
+
+
+
+uint32_t oled_invert_display(oled_info_t *info, uint8_t t);
+uint32_t oled_reverse_display_scan(oled_info_t *info, uint8_t t);
+
+
+#endif
+
+#endif
